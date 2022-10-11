@@ -8,10 +8,11 @@ class FormularioRequerimiento(forms.ModelForm):
     
         class Meta:
             model = Requerimiento
-            fields = ["titulo", "descripcion","created_by", "estado"]
+            fields = ["titulo", "tipo","descripcion","created_by", "estado"]
 
             labels = {
                 "titulo": "Titulo",
+                "tipo": "Tipo Requerimiento",
                 "descripcion": "Descripción",
                 "estado": "Estado",
                 "created_by": "Nombre de quien crea el requerimiento",
