@@ -12,6 +12,7 @@
             <tr>
                 <th>ID</th>
                 <th>Titulo</th>
+                <th>Tipo</th>
                 <th>Estado</th>
                 <th>Creado Por:</th>
                 <th>Fecha Creación</th>
@@ -23,7 +24,7 @@
             <tr>
                 <td>{{requerimiento.id}}</td>
                 <td>{{requerimiento.titulo}}</td>
-
+                <td>{{requerimiento.tipo}}</td>
                 {% if requerimiento.estado %}
                 <td><span class="badge bg-success">Activo</span></td>
                 {% else %}
