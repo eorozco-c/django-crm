@@ -30,6 +30,7 @@
                 <th>Nombre</th>
                 <th>Stock</th>
                 <th>Estado</th>
+                <th>Ubicación</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -44,6 +45,7 @@
                 {% else %}
                 <td><span class="badge bg-danger">Inactivo</span></td>
                 {% endif %}
+                <td>{{articulo.ubicacion}}</td>
                 <td>
                     <a class="btn btn-primary btn-sm text-light border border-dark m-1"
                         href="{% url 'articulos:editar' pk=articulo.id %}" id="edit"><i class="fas fa-edit"></i></a>
