@@ -16,6 +16,7 @@
                 <th>Estado</th>
                 <th>Creado Por:</th>
                 <th>Fecha Creación</th>
+                <th>Cumplido</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -28,14 +29,18 @@
                 {% if requerimiento.estado %}
                 <td><span class="badge bg-success">Activo</span></td>
                 {% else %}
-                <td><span class="badge bg-danger">Inactivo</span></td>
+                <td><span class="badge bg-danger">Finalizado</span></td>
                 {% endif %}
                 <td>{{requerimiento.created_by}}</td>
                 <td>{{requerimiento.created_at|date:"d/m/Y"}}</td>
+                <td>{{requerimiento.cumple}}</td>
                 <td>
-                    <!--Add butto comentarios-->
-                    <a href="{% url 'requerimientos:agregar_comentarios' pk=requerimiento.id %}"
-                        class="fas fa-comments"></i></a>
+                    <!-- Ver comentarios in modal-->
+                    <a href="{% url 'requerimientos:list_comentarios' requerimiento.id %}"
+                        class="btn btn-primary btn-circle btn-sm open-comentarios" data-bs-toggle="modal_comentarios"
+                        data-bs-target="#modal_comentarios">
+                        <i class="fas fa-comments"></i>
+                    </a>
                     <a class="btn btn-primary btn-sm text-light border border-dark m-1"
                         href="{% url 'requerimientos:editar' pk=requerimiento.id %}" id="edit"><i
                             class="fas fa-edit"></i></a>
@@ -67,6 +72,26 @@
         </div>
     </div>
 </div>
+
+<!--modal_comentarios-->
+<div class="modal fade" id="modal_comentarios" tabindex="-1" notempty='not' aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" notempty='not'>
+        <div class="modal-content" notempty='not'>
+            <div class="modal-header" notempty='not'>
+                <h5 class="modal-title " id="modalLabel" notempty='not'>Comentarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" notempty='not'>
+            </div>
+            <div class="modal-footer" notempty='not'>
+                <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button id="delete" type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock contenido %}
 {% block javascript %}
 <script>
@@ -85,6 +110,18 @@
                 $("#delete").click(function () {
                     window.location.href = "/requerimientos/destroy/" + data["id"];
                 })
+            }
+        });
+    });
+    $(".dataTable").on('click', '.open-comentarios', function () {
+        $.ajax({
+            type: "GET",
+            url: $(this).attr("data-popup-url"),
+            dataType: "json",
+            success: function (data) {
+                //add comentarios into modal with  burble
+                console.log(data);
+
             }
         });
     });

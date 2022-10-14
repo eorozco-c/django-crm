@@ -9,4 +9,7 @@ urlpatterns = [
     path('editar/<int:pk>', views.EditRequerimiento.as_view(), name="editar"),
     path('predestroy/<int:pk>', views.predestroy, name="predestroy"),
     path('destroy/<int:pk>', views.destroy, name="destroy"),
+    path('historial', views.ListHistorial.as_view(), name="historial"),
+    path('agregar_comentarios/<int:pk>', views.CrearComentario.as_view(), name="agregar_comentarios"),
+    path('list_comentarios/<int:pk>', views.list_comentarios, name="list_comentarios"),
 ]
