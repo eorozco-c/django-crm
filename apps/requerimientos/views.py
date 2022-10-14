@@ -121,7 +121,7 @@ class CrearComentario(CreateView):
         form.instance.created_by = self.request.user
         return super(CrearComentario, self).form_valid(form)
 
-@LoginRequiredMixin(login_url="/")
+@login_required(login_url="/")
 def list_comentarios(request, pk):
     if request.method == "GET":
         try:
