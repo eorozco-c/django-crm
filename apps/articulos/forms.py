@@ -8,7 +8,7 @@ class FormularioArticulo(forms.ModelForm):
     
         class Meta:
             model = Articulo
-            fields = ["nombre","descripcion","stock","ubicacion","estado"]
+            fields = ["nombre","descripcion","stock","ubicacion","estado","articulo_estado"]
     
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
