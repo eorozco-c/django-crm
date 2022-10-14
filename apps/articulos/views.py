@@ -98,6 +98,7 @@ def importar(request):
                     "stock": row["cantidad"],
                     "ubicacion": row["ubicacion"],
                     "empresa": request.user.empresa,
+                    "articulo_estado_id": 1,
                 }
             )
         # except:
