@@ -3,8 +3,18 @@
 {% block contenido%}
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <a href="{% url 'requerimientos:crear' %}" class="align-self-center ms-2 mb-1 btn btn-success text-light border"><i
-            class="fas fa-plus-circle"></i> Agregar Requerimiento</a>
+    <form action="{% url 'requerimientos:historial' %}" method="GET" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="fecha_ini" class="me-1">Fecha Inicio: </label>
+            <input type="datetime-local" class="form-control" id="fecha_ini" name="fecha_ini"
+                placeholder="Fecha Inicio">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="fecha_fin" class="me-1">Fecha Fin: </label>
+            <input type="datetime-local" class="form-control" id="fecha_fin" name="fecha_fin" placeholder="Fecha Fin">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+    </form>
 </div>
 <div class="table-responsive mt-3">
     <table id="tabla_base" class="table table-striped table-hover table-borderless" style="width:100%">
@@ -36,8 +46,8 @@
                 <td>{{requerimiento.cumple}}</td>
                 <td>
                     <!-- Ver comentarios in modal-->
-                    <a href="{% url 'requerimientos:list_comentarios' requerimiento.id %}"
-                        class="btn btn-primary btn-circle btn-sm open-comentarios" data-bs-toggle="modal_comentarios"
+                    <a data-popup-url="{% url 'requerimientos:list_comentarios' requerimiento.id %}"
+                        class="btn btn-primary btn-circle btn-sm open-comentarios" data-bs-toggle="modal"
                         data-bs-target="#modal_comentarios">
                         <i class="fas fa-comments"></i>
                     </a>
@@ -82,7 +92,7 @@
                 <h5 class="modal-title " id="modalLabel" notempty='not'>Comentarios</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" notempty='not'>
+            <div class="modal-body" id="modal-com" notempty='not'>
             </div>
             <div class="modal-footer" notempty='not'>
                 <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -103,7 +113,7 @@
             success: function (data) {
                 Datos =
                     "<p notempty='not'> ID: " + data['id'] +
-                    "</p> <p notempty='not'> Titulo: " + data['titulo'] +
+                    "</p> <p notempty='not'> Titulo: " + data['nombre'] +
                     "</p> <p notempty='not'> Descripción: " + data['descripcion'] +
                     "</p>";
                 $(".modal-body").append(Datos);
@@ -121,7 +131,26 @@
             success: function (data) {
                 //add comentarios into modal with  burble
                 console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    Datos =
+                        "<div class='card card-primary card-outline' notempty='not'>" +
+                        "<div class='card-header' notempty='not'>" +
+                        "<p class='card-title' notempty='not'>" + data[i]['created_by__username'] +
+                        "</p>" +
+                        "<div class='card-tools notempty='not'>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div class='card-body' notempty='not'>" +
+                        "<p notempty='not'>" + data[i]['comentario'] + "</p>" +
+                        "</div>" +
+                        "</div>";
 
+                    div_overflow = document.getElementById("modal-com");
+                    div_overflow.style.overflow = "auto";
+                    div_overflow.style.maxHeight = "500px";
+
+                    $(".modal-body").append(Datos);
+                }
             }
         });
     });
@@ -133,5 +162,46 @@
         if ($(e.target).attr('notempty') != "not")
             $(".modal-body").empty();
     });
+
+    // if fecha_ini from request.get form set value to input else set value to today date at 00:00
+    if ('{{fecha_ini}}' != 'None' && '{{fecha_ini}}' != '') {
+        $('#fecha_ini').val('{{fecha_ini}}');
+    } else {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd + 'T00:00';
+        $('#fecha_ini').val(today);
+    }
+    //if fecha_fin from request.get form set value to input else set value to today date at 00:00
+    if ('{{fecha_fin}}' != 'None' && '{{fecha_fin}}' != '') {
+        $('#fecha_fin').val('{{fecha_fin}}');
+    } else {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd + 'T23:59';
+        $('#fecha_fin').val(today);
+    }
 </script>
 {% endblock javascript %}

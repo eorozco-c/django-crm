@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from .models import Comentario, Requerimiento
 from .forms import FormularioRequerimiento, FormularioComentario
+import datetime
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -66,7 +67,8 @@ def predestroy(request, pk):
             return redirect("requerimientos:index")
         context={
             'id' : requerimiento.id,
-            'nombre': requerimiento.nombre,
+            'nombre': requerimiento.titulo,
+            'descripcion': requerimiento.descripcion,
         }
         return JsonResponse(context)
     return redirect("articulos:index")
@@ -88,15 +90,32 @@ class ListHistorial(ListView):
     template_name = "requerimientos/requerimientos_historial.html"
 
     def get_queryset(self):
-        return Requerimiento.objects.filter(empresa=self.request.user.empresa, estado=False)
+        fecha_ini = self.request.GET.get('fecha_ini')
+        fecha_fin = self.request.GET.get('fecha_fin')
+        if not fecha_ini or not fecha_fin:
+            date_ini = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            date_end = datetime.datetime.now().replace(hour=23, minute=59, second=59, microsecond=0)
+        else:
+            date_ini = datetime.datetime.strptime(fecha_ini, '%Y-%m-%dT%H:%M').strftime('%Y-%m-%d %H:%M')
+            date_end = datetime.datetime.strptime(fecha_fin, '%Y-%m-%dT%H:%M').strftime('%Y-%m-%d %H:%M')
+        return Requerimiento.objects.filter(empresa=self.request.user.empresa, estado=False, created_at__range=(date_ini, date_end))
 
     def get_context_data(self, **kwargs):
         context = super(ListHistorial, self).get_context_data(**kwargs)
         context["appname"] = "requerimientos_historial"
+        fecha_ini = self.request.GET.get('fecha_ini')
+        fecha_fin = self.request.GET.get('fecha_fin')
+        if not fecha_ini or not fecha_fin:
+            date_ini = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            date_end = datetime.datetime.now().replace(hour=23, minute=59, second=59, microsecond=0)
+        else:
+            date_ini = datetime.datetime.strptime(fecha_ini, '%Y-%m-%dT%H:%M').strftime('%Y-%m-%d %H:%M')
+            date_end = datetime.datetime.strptime(fecha_fin, '%Y-%m-%dT%H:%M').strftime('%Y-%m-%d %H:%M')
+        context["fecha_ini"] = date_ini
+        context["fecha_fin"] = date_end
         return context
 
-    def get(self, request):
-        return super(ListHistorial, self).get(request)
+
 
 @method_decorator(login_required, name='dispatch')
 class CrearComentario(CreateView):
@@ -126,11 +145,13 @@ def list_comentarios(request, pk):
     if request.method == "GET":
         try:
             requerimiento = Requerimiento.objects.get(id=pk)
-            comentarios = Comentario.objects.filter(requerimiento=requerimiento)
+            comentarios = Comentario.objects.filter(requerimiento=requerimiento).values('id', 'comentario', 'created_by__username', 'created_at')
         except:
             return redirect("requerimientos:index")
-        context={
-            'comentarios' : comentarios,
+        #obtain comentarios and created_by
+        data = list(comentarios)
+        context = {
+            'comentarios': data,
         }
-        return JsonResponse(context)
+        return JsonResponse(data, safe=False)
     return redirect("requerimientos:index")
