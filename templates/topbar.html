@@ -12,16 +12,19 @@
         <!-- Nav Item - User Information -->
 
         <li class="nav-item dropdown no-arrow">
-            {% if user.empresa.logo %}
+            {% comment %} {% if user.empresa.logo %} {% endcomment %}
+
             <!--div with 2 columns row small-->
             <div class="row">
                 <div class="col">
-                    <a class="nav-link disabled text-dark">Empresa: {{user.empresa.nombre}}</a>
+                    <script src="{% static 'master/img/oracle.png'  %}"></script>
+                    {% comment %} <a class="nav-link disabled text-dark">Empresa: {{user.empresa.nombre}}</a>
+                    {% endcomment %}
                 </div>
-                <div class="col">
+                {% comment %} <div class="col">
                     <a class="nav-link disabled"> <img class="img-profile rounded-circle"
                             src="{{user.empresa.logo.url}}"></a>
-                </div>
+                </div> {% endcomment %}
 
             </div>
             {% else %}

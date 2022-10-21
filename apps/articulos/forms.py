@@ -1,3 +1,4 @@
+from cProfile import label
 from django import forms
 from .models import Articulo
 from crispy_forms.helper import FormHelper
@@ -8,8 +9,14 @@ class FormularioArticulo(forms.ModelForm):
     
         class Meta:
             model = Articulo
-            fields = ["nombre","descripcion","stock","ubicacion","estado","articulo_estado"]
-    
+            fields = ["nombre","descripcion","stock","visible_bodega","ubicacion","estado","articulo_estado"]
+
+            labels = {
+                "estado": "Dsiponibilidad",
+                "articulo_estado": "Estado",
+            }
+
+
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.helper = FormHelper()

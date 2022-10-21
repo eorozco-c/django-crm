@@ -29,6 +29,7 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Stock</th>
+                <th>Visible Bodega</th>
                 <th>Estado</th>
                 <th>Disponible</th>
                 <th>Ubicación</th>
@@ -38,9 +39,10 @@
         <tbody>
             {% for articulo in object_list %}
             <tr>
-                <td>{{articulo.id}}</td>
                 <td>{{articulo.nombre}}</td>
+                <td>{{articulo.descripcion}}</td>
                 <td>{{articulo.stock}}</td>
+                <td>{{articulo.visible_bodega}}</td>
                 <td>{{articulo.articulo_estado}}</td>
                 {% if articulo.estado %}
                 <td><span class="badge bg-success">Activo</span></td>

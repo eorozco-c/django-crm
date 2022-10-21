@@ -92,11 +92,12 @@ def importar(request):
         # try:
         for index, row in df.iterrows():
             Articulo.objects.update_or_create(
-                nombre = row["nombre"],
+                nombre = row["id"],
                 defaults={
-                    "descripcion": row["descripcion"],
+                    "descripcion": row["nombre"],
                     "stock": row["cantidad"],
                     "ubicacion": row["ubicacion"],
+                    "visible_bodega": row["visible bodega"],
                     "empresa": request.user.empresa,
                     "articulo_estado_id": 1,
                 }
