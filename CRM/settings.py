@@ -25,7 +25,6 @@ SECRET_KEY = 'django-insecure-7747#%hf2d07=dww%f5-3^s-yi@flqu0jryvgec+2!^nnh*s+%
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 ALLOWED_HOSTS = ['*']
 
 
@@ -93,7 +92,7 @@ DATABASES = {
     )
 }
 
-#mysql
+# mysql
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
