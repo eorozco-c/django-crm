@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.contrib import messages
 from apps.usuarios.models import Usuario
+from apps.articulos.models import Articulo
 from .models import Empresa
 from .formularios import FormularioEmpresa
 
@@ -104,4 +105,8 @@ def cambiarEmpresa(request, pk):
             usuario = Usuario.objects.get(id=request.user.id)
             usuario.empresa = empresa
             usuario.save()
+            #recalcular el stock and set request.session.articulos
+            articulos = Articulo.objects.filter(empresa=empresa)
+            if articulos.count() > 0:
+                request.session['articulos'] = True
     return redirect("empresas:index")
