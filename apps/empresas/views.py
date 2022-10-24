@@ -109,4 +109,6 @@ def cambiarEmpresa(request, pk):
             articulos = Articulo.objects.filter(empresa=empresa)
             if articulos.count() > 0:
                 request.session['articulos'] = True
+            else:
+                request.session['articulos'] = False
     return redirect("empresas:index")
