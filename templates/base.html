@@ -50,6 +50,16 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <!--Alert of little articulos-->
+                    {% if request.session.articulos %}
+                    <!--Alert of little articulos-->
+                    <div class="alert alert-warning alert-dismissible" role="alert"><strong>Atención!</strong> Hay
+                        articulos con poco stock. <a href="{% url 'articulos:index' %}">
+                            Ver </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    {% endif %}
                     {% block contenido %}{% endblock contenido %}
                 </div>
                 <!-- /.container-fluid -->

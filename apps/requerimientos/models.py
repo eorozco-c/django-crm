@@ -10,6 +10,10 @@ class TipoRequerimiento(models.Model):
     def __str__(self):
         return self.nombre
 
+    #uppercase
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super(TipoRequerimiento, self).save(*args, **kwargs)
 
 # Create your models here.
 class Requerimiento(models.Model):
@@ -21,7 +25,7 @@ class Requerimiento(models.Model):
     tipo = models.ForeignKey(TipoRequerimiento, on_delete=models.CASCADE, related_name="requerimientos_tipo", null=True, blank=True)
     cumple = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.titulo

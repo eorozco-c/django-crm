@@ -15,7 +15,7 @@ class Articulo(models.Model):
     ubicacion = models.CharField(max_length=255, blank=True, null=True)
     estado = models.BooleanField(default=True)
     visible_bodega = models.CharField(max_length=255, blank=True, null=True)
-    articulo_estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+    articulo_estado = models.ForeignKey(Estado, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="articulos_empresa")

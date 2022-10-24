@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from apps.empresas.models import Empresa
 from apps.usuarios.models import Usuario
+from apps.articulos.models import Articulo
 
 import psutil
 
@@ -16,6 +17,10 @@ def index(request):
         if Usuario.objects.count() == 0:
             return redirect("usuarios:registrar")
         if request.user.is_authenticated:
+            articulos = Articulo.objects.filter(empresa=request.user.empresa, stock__lte=5)
+            if articulos.count() > 0:
+                #save in session
+                request.session["articulos"] = True
             return redirect("master:menu")
     return redirect("usuarios:login")
 

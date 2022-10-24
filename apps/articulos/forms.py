@@ -12,7 +12,7 @@ class FormularioArticulo(forms.ModelForm):
             fields = ["nombre","descripcion","stock","visible_bodega","ubicacion","estado","articulo_estado"]
 
             labels = {
-                "estado": "Dsiponibilidad",
+                "estado": "Disponibilidad",
                 "articulo_estado": "Estado",
             }
 
