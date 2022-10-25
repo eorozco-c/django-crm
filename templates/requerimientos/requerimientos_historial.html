@@ -42,7 +42,12 @@
                 {% endif %}
                 <td>{{requerimiento.created_by}}</td>
                 <td>{{requerimiento.created_at|date:"d/m/Y"}}</td>
-                <td>{{requerimiento.cumple}}</td>
+                {% if requerimiento.cumple %}
+                <td><span class="badge bg-success">Si</span></td>
+                {% else %}
+                <td><span class="badge bg-danger">No</span></td>
+                {% endif %}
+
                 <td>
                     <!-- Ver comentarios in modal-->
                     <a data-popup-url="{% url 'requerimientos:list_comentarios' requerimiento.id %}"
