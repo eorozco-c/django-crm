@@ -7,8 +7,9 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from .models import Articulo
 from .forms import FormularioArticulo
-
 import pandas as pd
+
+
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
 class ListArticulos(ListView):
